@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 
@@ -13,7 +12,6 @@ from PyQt4.QtCore import SIGNAL, SLOT
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import *
 from qnode import JoyGui
-
 
 import rospy
 from std_msgs.msg import String
@@ -175,7 +173,6 @@ class JoyGui(object):
     def __init__(self):
         pass
 
-
     def enabled_Check_CB(self, msg):
         """
         Checks if Pacmod is enabled and returns status
@@ -190,7 +187,6 @@ class JoyGui(object):
             last_Enable = msg.data
             rospy.loginfo("I heard a NEW msg: PACMod Enabled = %s", msg.data)
             enable = msg.data # Set message for processing
-
 
 
     def override_Check_CB(self,msg):
@@ -247,7 +243,6 @@ class JoyGui(object):
 
         # Send module state to Log for troubleshooting
         rospy.loginfo("Ready to publish... \n")
-
 
         # Set to match Pacmod rate
         self.rate = rospy.Rate(PACMOD_RATE) # 30 HZ

@@ -1,0 +1,4 @@
+*.pyc
+*.pro.user
+*.cpp
+.vscode/

@@ -2,7 +2,8 @@
 import roslaunch 
 
 package = 'pacmod_game_control_ui'
-executable = 'pynode'
+
+executable = 'game_controller'
 node = roslaunch.core.Node(package,executable)
 
 launch = roslaunch.scriptapi.ROSLaunch()

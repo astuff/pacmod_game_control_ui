@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>pacmod_game_control_ui</name>
+  <name>game_control</name>
   <version>0.0.0</version>
-  <description>The pacmod_game_control_ui</description>
+  <description>The game_control package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,8 +19,8 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/joy_enabled</url> -->
 
+  <!-- <url type="website">http://wiki.ros.org/game_control</url> -->
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
@@ -49,19 +49,23 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>pacmods_msgs</build_depend>
+  <build_depend>qt_build</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
-  <build_depend>pacmod_msgs</build_depend>
-  <build_depend>can_msgs</build_depend>
+  <build_export_depend>pacmods_msgs</build_export_depend>
+  <build_export_depend>qt_build</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
-  <exec_depend>can_msgs</exec_depend>
-  <exec_depend>pacmod_msgs</exec_depend>
+  <exec_depend>pacmods_msgs</exec_depend>
+  <exec_depend>qt_build</exec_depend>
+
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
