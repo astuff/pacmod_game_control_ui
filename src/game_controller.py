@@ -12,7 +12,6 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import SIGNAL, SLOT
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import *
-from qnode import JoyGui
 
 import rospy
 from std_msgs.msg import String
