@@ -20,7 +20,7 @@ from std_msgs.msg import Float64
 from std_msgs.msg import Bool
 from pacmod_msgs.msg import *
 
-#Node name 
+#Node name
 pyNode = "joy_gui"
 
 #Global constant
@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(spacerItem)
         self.as_logo = QtGui.QLabel(self.centralWidget)
         self.as_logo.setText(_fromUtf8(""))
-        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/AS only dark(128).jpg")))
+        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_dark_no_bg(80).png")))
         self.as_logo.setObjectName(_fromUtf8("as_logo"))
         self.as_logo.setAlignment(QtCore.Qt.AlignRight)
         self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
@@ -202,11 +202,11 @@ class JoyGui(object):
         # Globals for GUI
         global last_Override
         global override
-     
+
         # Checks for repetitive messages
         if msg.override_active != last_Override:
             last_Override = msg.override_active
-            #rospy.loginfo("I heard a NEW msg: Override = %s", msg.override_active)
+            rospy.loginfo("I heard a NEW msg: Override = %s", msg.override_active)
             override = msg.override_active # Set message for proccessing
 
 
@@ -264,7 +264,7 @@ class JoyGui(object):
 
 class MyThread(QtCore.QThread):
 
-    # Custom signals, keep a class level variable or they wont function properly
+    # Custom signals, keep as class level variable or they wont function properly
     accel_signal = pyqtSignal(int, name = "set_accel_bar")
     brake_signal = pyqtSignal(int, name = "set_brake_bar")
     enable_signal =pyqtSignal(bool, name = "set_enable")
@@ -289,10 +289,10 @@ class MyThread(QtCore.QThread):
                     time.sleep(PACMOD_RATE_IN_SEC)
 
                     self.accel_signal.emit(veh_accel)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    #time.sleep(PACMOD_RATE_IN_SEC)
 
                     self.brake_signal.emit(veh_brake)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    #time.sleep(PACMOD_RATE_IN_SEC)
 
                 if (enable == False) and (override == False):
                     self.enable_signal.emit(enable)
@@ -340,18 +340,36 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot()
     def closeEvent(self,event):
 
-        # Kills all active nodes, will even attempt to close /rosout
-        # nodes = os.popen("rosnode list").readlines()
-        # for i in range(len(nodes)):
-        #     nodes[i] = nodes[i].replace("\n","")
+        #Kills all active nodes, will even attempt to close /rosout
+        nodes = os.popen("rosnode list").readlines()
+        for i in range(len(nodes)):
+            nodes[i] = nodes[i].replace("\n","")
 
-        # for node in nodes:
-        #     os.system("rosnode kill "+ node)
+            print "Close event detected\nGame control node shutting down..."
+            #rospy.signal_shutdown("an exception")
 
-        print "Close event detected\nGame control node shutting down..."
-        rospy.signal_shutdown("an exception")
+            if nodes[i] == "/joy_gui":
+                os.system("rosnode kill "+ nodes[i])
+                print "killed joy_gui"
+
+            if nodes[i] == "/pacmod/pacmod":
+                os.system("rosnode kill "+ nodes[i])
+                print "killed pacmod/pacmod"
+
+            if nodes[i] == "/game_control/joy":
+                os.system("rosnode kill "+ nodes[i])
+                print "killed /game_control/joy"
+
+            if nodes[i] == "/game_control/pacmod_game_control":
+                os.system("rosnode kill "+ nodes[i])
+                print "killed /game_control/pacmod_game_control"
+
+            if nodes[i] == "/pacmod/kvaser_can_bridge":
+                os.system("rosnode kill "+ nodes[i])
+                print "killed /pacmod/kvaser_can_bridge"
+
         self.destroy()
-        #self.deleteLater()
+        self.deleteLater()
         event.accept()
         
     @QtCore.pyqtSlot(bool)
