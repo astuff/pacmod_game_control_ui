@@ -15,6 +15,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import QLabel
 
 import rospy
+import roslaunch
 from std_msgs.msg import String
 from std_msgs.msg import Float64
 from std_msgs.msg import Bool
@@ -233,19 +234,19 @@ class JoyGui(object):
             veh_brake = int(msg.output * CONVERTER)
             #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake)) # Sends info to log
 
-    def overArray(self,msg):
-        pass
-        # [1] = brake system on lexus and truck
-        # [3] = steering on truck
-        # [5] = steering on lexus
+    # def overArray(self,msg):
+    #     pass
+    #     # [1] = brake system on lexus and truck
+    #     # [3] = steering on truck
+    #     # [5] = steering on lexus
 
-        print "Now in over ride checker"
+    #     print "Now in over ride checker"
 
-        print "Brake = " + msg.overridden_status[1].value
+    #     print "Brake = " + msg.overridden_status[1].value
 
-        print "Steer = " + msg.overridden_status[5].value
+    #     print "Steer = " + msg.overridden_status[5].value
 
-        #print msg.overridden_status[5].value
+    #     #print msg.overridden_status[5].value
 
     def subscribe(self):
 
@@ -260,7 +261,7 @@ class JoyGui(object):
         self.sysOverRideSub = rospy.Subscriber('/pacmod/parsed_tx/global_rpt',pacmod_msgs.msg.GlobalRpt,self.override_Check_CB, queue_size=100)
         self.throttleSub = rospy.Subscriber('/pacmod/parsed_tx/accel_rpt',pacmod_msgs.msg.SystemRptFloat,self.accel_Percent_CB,queue_size= 100)
         self.brakeSub = rospy.Subscriber('/pacmod/parsed_tx/brake_rpt',pacmod_msgs.msg.SystemRptFloat,self.brake_Percent_CB, queue_size= 100)
-        self.allSysOver = rospy.Subscriber('/pacmod/as_tx/all_system_statuses',pacmod_msgs.msg.AllSystemStatuses, self.overArray, queue_size=100)
+        #self.allSysOver = rospy.Subscriber('/pacmod/as_tx/all_system_statuses',pacmod_msgs.msg.AllSystemStatuses, self.overArray, queue_size=100)
 
 class MyThread(QtCore.QThread):
 
@@ -340,29 +341,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
     @QtCore.pyqtSlot()
     def closeEvent(self,event):
 
-        #Kills all active nodes, will even attempt to close /rosout
-        nodes = os.popen("rosnode list").readlines()
-        for i in range(len(nodes)):
-            nodes[i] = nodes[i].replace("\n","")
-            
-            if i == 0:
-                print "Close event detected\nGame control node shutting down..."
-                #rospy.signal_shutdown("an exception")
-
-            if nodes[i] == "/pacmod/pacmod":
-                os.system("rosnode kill "+ nodes[i])
-
-            if nodes[i] == "/game_control/joy":
-                os.system("rosnode kill "+ nodes[i])
-
-            if nodes[i] == "/game_control/pacmod_game_control":
-                os.system("rosnode kill "+ nodes[i])
-
-            if nodes[i] == "/pacmod/kvaser_can_bridge":
-                os.system("rosnode kill "+ nodes[i])
-
-            if nodes[i] == "/joy_gui":
-                os.system("rosnode kill "+ nodes[i])
+        os.system("rosnode kill " + "/joy_gui")
 
         self.destroy()
         self.deleteLater()
@@ -427,6 +406,8 @@ if __name__ == "__main__":
     rospy.init_node(pyNode)
     joy_gui = JoyGui()
     joy_gui.subscribe()
+
+
 
     #Init application window
     app = QtGui.QApplication(sys.argv)
