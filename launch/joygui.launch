@@ -1,15 +1,10 @@
 <launch>
-import roslaunch 
 
-package = 'pacmod_game_control_ui'
+    <node name="joy_gui" pkg="pacmod_game_control_ui" type="game_controller_ui.py" required="true">
+    </node>
 
-executable = 'game_controller'
-node = roslaunch.core.Node(package,executable)
+    <include file="$(find pacmod_game_control)/launch/pacmod_game_control.launch">
+    </include>
 
-launch = roslaunch.scriptapi.ROSLaunch()
-launch.start()
 
-process = launch.launch(node)
-print(process.is_alive())
-process.stop()
 </launch>

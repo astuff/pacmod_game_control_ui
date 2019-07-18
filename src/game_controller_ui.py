@@ -234,7 +234,7 @@ class JoyGui(object):
             #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake)) # Sends info to log
 
     def overArray(self,msg):
-
+        pass
         # [1] = brake system on lexus and truck
         # [3] = steering on truck
         # [5] = steering on lexus
@@ -344,29 +344,25 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         nodes = os.popen("rosnode list").readlines()
         for i in range(len(nodes)):
             nodes[i] = nodes[i].replace("\n","")
-
-            print "Close event detected\nGame control node shutting down..."
-            #rospy.signal_shutdown("an exception")
-
-            if nodes[i] == "/joy_gui":
-                os.system("rosnode kill "+ nodes[i])
-                print "killed joy_gui"
+            
+            if i == 0:
+                print "Close event detected\nGame control node shutting down..."
+                #rospy.signal_shutdown("an exception")
 
             if nodes[i] == "/pacmod/pacmod":
                 os.system("rosnode kill "+ nodes[i])
-                print "killed pacmod/pacmod"
 
             if nodes[i] == "/game_control/joy":
                 os.system("rosnode kill "+ nodes[i])
-                print "killed /game_control/joy"
 
             if nodes[i] == "/game_control/pacmod_game_control":
                 os.system("rosnode kill "+ nodes[i])
-                print "killed /game_control/pacmod_game_control"
 
             if nodes[i] == "/pacmod/kvaser_can_bridge":
                 os.system("rosnode kill "+ nodes[i])
-                print "killed /pacmod/kvaser_can_bridge"
+
+            if nodes[i] == "/joy_gui":
+                os.system("rosnode kill "+ nodes[i])
 
         self.destroy()
         self.deleteLater()
