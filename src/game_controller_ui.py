@@ -13,9 +13,10 @@ from PyQt4.QtCore import SIGNAL, SLOT
 from PyQt4.QtCore import QObject
 from PyQt4.QtCore import *
 from PyQt4.QtGui import QLabel
+from PyQt4.QtGui import QApplication
 
 import rospy
-import roslaunch
+#import roslaunch
 from std_msgs.msg import String
 from std_msgs.msg import Float64
 from std_msgs.msg import Bool
@@ -32,7 +33,6 @@ PACMOD_RATE_IN_SEC = 0.33
 # Controls for ROS MSG'S
 enable = False
 override = False
-
 veh_accel = 0.0
 veh_brake = 0.0
 
@@ -72,6 +72,7 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.pac_wheel_label.setFont(font)
         self.pac_wheel_label.setObjectName(_fromUtf8("pac_wheel_label"))
+        self.pac_wheel_label.setStyleSheet(_fromUtf8("color: white"))
         self.pac_wheel_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_2.addWidget(self.pac_wheel_label, QtCore.Qt.AlignHCenter)
         self.pac_wheel = QtGui.QLabel(self.centralWidget)
@@ -97,7 +98,7 @@ class Ui_MainWindow(object):
         self.pacmod_label.setObjectName(_fromUtf8("pacmod_label"))
         self.pacmod_label.setFrameShape(QtGui.QFrame.StyledPanel)
         #self.QFrame.setstylesheet() # maybe a work around for border radius
-        self.pacmod_label.setStyleSheet( _fromUtf8("background-color: rgb(136, 138, 133);"))
+        self.pacmod_label.setStyleSheet( _fromUtf8("background-color: rgb(136, 138, 133); color: white"))
         self.pacmod_label.setAlignment(Qt.AlignVCenter)
         self.pacmod_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
         self.horizontalLayout_2.addWidget(self.pacmod_label, QtCore.Qt.AlignHCenter)
@@ -111,6 +112,7 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.acceleration_label.setFont(font)
         self.acceleration_label.setObjectName(_fromUtf8("acceleration_label"))
+        self.acceleration_label.setStyleSheet(_fromUtf8("color: white"))
         self.acceleration_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addWidget(self.acceleration_label, QtCore.Qt.AlignHCenter)
         self.acceleration_bar = QtGui.QProgressBar(self.centralWidget)
@@ -120,6 +122,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.acceleration_bar.sizePolicy().hasHeightForWidth())
         self.acceleration_bar.setSizePolicy(sizePolicy)
         self.acceleration_bar.setProperty("value", 0)
+        self.acceleration_bar.setStyleSheet( _fromUtf8("color: white;"))
         self.acceleration_bar.setObjectName(_fromUtf8("acceleration_bar"))
         self.verticalLayout_3.addWidget(self.acceleration_bar)
         self.braking_label = QtGui.QLabel(self.centralWidget)
@@ -127,6 +130,7 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.braking_label.setFont(font)
         self.braking_label.setObjectName(_fromUtf8("braking_label"))
+        self.braking_label.setStyleSheet(_fromUtf8("color: white"))
         self.braking_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addWidget(self.braking_label, QtCore.Qt.AlignHCenter)
         self.braking_bar = QtGui.QProgressBar(self.centralWidget)
@@ -137,6 +141,7 @@ class Ui_MainWindow(object):
         self.braking_bar.setSizePolicy(sizePolicy)
         self.braking_bar.setProperty("value", 0)
         self.braking_bar.setObjectName(_fromUtf8("braking_bar"))
+        self.braking_bar.setStyleSheet( _fromUtf8("color: white;"))
         self.verticalLayout_3.addWidget(self.braking_bar)
         self.verticalLayout.addLayout(self.verticalLayout_3)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -171,12 +176,12 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "Pacmod game control", None))
-        self.pac_wheel_label.setText(_translate("MainWindow", "Pacmod Indicator", None))
-        self.pacmod_label.setText(_translate("MainWindow", "Pacmod Status:", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "PACMod game control", None))
+        self.pac_wheel_label.setText(_translate("MainWindow", "PACMod Indicator", None))
+        self.pacmod_label.setText(_translate("MainWindow", "PACMod Status:", None))
         self.acceleration_label.setText(_translate("MainWindow", "Acceleration", None))
         self.braking_label.setText(_translate("MainWindow", "Braking", None))
-        self.menuPacmod_Game_Control.setTitle(_translate("MainWindow", "Pacmod Game Control", None))
+        self.menuPacmod_Game_Control.setTitle(_translate("MainWindow", "PACMod Game Control", None))
 
 class JoyGui(object):
     
@@ -302,10 +307,15 @@ class MyThread(QtCore.QThread):
                     time.sleep(PACMOD_RATE_IN_SEC)
                     self.brake_signal.emit(0)
                     time.sleep(PACMOD_RATE_IN_SEC)
+
     
                 elif (override == True) and (enable == False):
                     self.enable_signal.emit(enable)
                     self.override_signal.emit(override)
+                    time.sleep(PACMOD_RATE_IN_SEC)
+                    self.accel_signal.emit(0)
+                    time.sleep(PACMOD_RATE_IN_SEC)
+                    self.brake_signal.emit(0)
                     time.sleep(PACMOD_RATE_IN_SEC)
 
                 elif (override == True) and (enable == True):
@@ -324,7 +334,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         #Initialize/show UI
         self.setupUi(self)
-        self.setStyleSheet("background-color: white;");
+        self.setStyleSheet("background-color: black");
         self.show()
 
         # Init thread and connect signals to slots to do work
@@ -340,12 +350,11 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
     #Signals and Slots here
     @QtCore.pyqtSlot()
     def closeEvent(self,event):
-
-        os.system("rosnode kill " + "/joy_gui")
-
+        
+        self.Thread.exit()
+        QtGui.QApplication.exit()
+        
         self.destroy()
-        self.deleteLater()
-        event.accept()
         
     @QtCore.pyqtSlot(bool)
     def set_enable(self, data):
@@ -356,14 +365,14 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         """
 
         if data == True:
-            self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(98, 177, 246)"))
-            self.pacmod_label.setText("Pacmod Status: Enabled")
+            self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(98, 177, 246); color: white"))
+            self.pacmod_label.setText("PACMod Status: Enabled")
             self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel.png")))
 
         elif data == False and (override == False):
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/sw_512_128x128.png")))
-            self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(136, 138, 133)")) 
-            self.pacmod_label.setText("Pacmod Status: Ready")
+            self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
+            self.pacmod_label.setText("PACMod Status: Ready")
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel.png")))
         self.update()
 
 
@@ -375,15 +384,15 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         push's status and changes background color
         """
 
-        self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green"))
-        self.pacmod_label.setText("Pacmod Status: Over-Ride")
+        self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
+        self.pacmod_label.setText("PACMod Status: Over-Ride")
         self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel.png")))
         self.update()
 
 
     @QtCore.pyqtSlot(int)
     def set_accel_bar(self,data):
-
+        
         """
         Sets acceleration percentage when pacmod game control is active
         """
@@ -406,11 +415,9 @@ if __name__ == "__main__":
     rospy.init_node(pyNode)
     joy_gui = JoyGui()
     joy_gui.subscribe()
-
-
-
+    
     #Init application window
     app = QtGui.QApplication(sys.argv)
-    #app.setStyle('motif')
+    app.setStyle('plastique')
     window = MyApp()
     sys.exit(app.exec_())
