@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=bash -ci 'roslaunch pacmod_game_control_ui joygui.launch --screen'
+Name=PACMod Game Control ui
+Comment=The AStuff Joystick Demo
+Icon=/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/joystick.png
+Name[en_US]=PACMod Game Control UI
