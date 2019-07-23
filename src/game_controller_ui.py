@@ -5,7 +5,7 @@
 # Created by: PyQt4 UI code generator 4.11.4
 
 import os
-import sys
+#import sys
 import time
 
 from PyQt4 import QtCore, QtGui
@@ -162,19 +162,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralWidget)
-        self.menuBar = QtGui.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 610, 22))
-        self.menuBar.setObjectName(_fromUtf8("menuBar"))
-        self.menuPacmod_Game_Control = QtGui.QMenu(self.menuBar)
-        self.menuPacmod_Game_Control.setObjectName(_fromUtf8("menuPacmod_Game_Control"))
-        MainWindow.setMenuBar(self.menuBar)
-        self.mainToolBar = QtGui.QToolBar(MainWindow)
-        self.mainToolBar.setObjectName(_fromUtf8("mainToolBar"))
-        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.mainToolBar)
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         MainWindow.setStatusBar(self.statusBar)
-        self.menuBar.addAction(self.menuPacmod_Game_Control.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -185,7 +175,6 @@ class Ui_MainWindow(object):
         self.pacmod_label.setText(_translate("MainWindow", "PACMod Status:", None))
         self.acceleration_label.setText(_translate("MainWindow", "Acceleration", None))
         self.braking_label.setText(_translate("MainWindow", "Braking", None))
-        self.menuPacmod_Game_Control.setTitle(_translate("MainWindow", "PACMod Game Control", None))
 
 class JoyGui(object):
     
@@ -201,7 +190,7 @@ class JoyGui(object):
         # Checks for repetitive messages
         if msg.data != last_Enable:
             last_Enable = msg.data
-            #rospy.loginfo("I heard a NEW msg: PACMod Enabled = %s", msg.data)
+            rospy.loginfo("NEW msg: PACMod Enabled = %s", msg.data)
             enable = msg.data # Set message for processing
 
 
@@ -216,7 +205,7 @@ class JoyGui(object):
         # Checks for repetitive messages
         if msg.override_active != last_Override:
             last_Override = msg.override_active
-            rospy.loginfo("I heard a NEW msg: Override = %s", msg.override_active)
+            rospy.loginfo("NEW msg: Override = %s", msg.override_active)
             override = msg.override_active # Set message for proccessing
 
 
