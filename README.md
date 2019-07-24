@@ -10,3 +10,11 @@ This can be achieved with the following terminal commands
 rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 
 sudo apt-get install python-qt4
+
+Qt has two methods to make image resources independent of full system pat.
+
+The first method:
+that is setup upon file generation would not work for me in the LEXUS_RH_450H 
+
+The second method:
+is making a resource folder with a xml file that identifies the relative path within the ros packages directory and is still being researched to make the pacmod_game_control_ui work across all platforms without having to set the complete system path for each image.
