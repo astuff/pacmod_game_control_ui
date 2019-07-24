@@ -95,7 +95,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pac_wheel.sizePolicy().hasHeightForWidth())
         self.pac_wheel.setSizePolicy(sizePolicy)
         self.pac_wheel.setText(_fromUtf8(""))
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.pac_wheel.setObjectName(_fromUtf8("pac_wheel"))
         self.verticalLayout_2.addWidget(self.pac_wheel, QtCore.Qt.AlignLeft)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -171,7 +171,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(spacerItem)
         self.as_logo = QtGui.QLabel(self.centralWidget)
         self.as_logo.setText(_fromUtf8(""))
-        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
+        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
         self.as_logo.setAlignment(QtCore.Qt.AlignRight)
         self.as_logo.setObjectName(_fromUtf8("as_logo"))
         self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
@@ -387,12 +387,12 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         if data == True:
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(98, 177, 246); color: white"))
             self.pacmod_label.setText("Enabled")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png")))
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png")))
 
         elif data == False and (override == False):
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
             self.pacmod_label.setText("Ready")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
@@ -406,7 +406,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
         self.pacmod_label.setText("Over-Ride")
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
