@@ -16,7 +16,6 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QApplication
 
 import rospy
-#import roslaunch
 from std_msgs.msg import String
 from std_msgs.msg import Float64
 from std_msgs.msg import Bool
@@ -35,6 +34,7 @@ enable = False
 override = False
 veh_accel = 0.0
 veh_brake = 0.0
+_steer_output = 0
 
 # Helper variables, Controls message frequency 
 last_Enable = ''
@@ -56,82 +56,98 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(610, 591)
+        MainWindow.resize(454, 400)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
+        MainWindow.setSizePolicy(sizePolicy)
         self.centralWidget = QtGui.QWidget(MainWindow)
         self.centralWidget.setObjectName(_fromUtf8("centralWidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.centralWidget)
         self.verticalLayout.setMargin(11)
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setMargin(11)
+        self.horizontalLayout_2.setSpacing(6)
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setMargin(11)
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.pac_wheel_label = QtGui.QLabel(self.centralWidget)
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setPointSize(15)
-        self.pac_wheel_label.setFont(font)
-        self.pac_wheel_label.setObjectName(_fromUtf8("pac_wheel_label"))
-        self.pac_wheel_label.setStyleSheet(_fromUtf8("color: white"))
-        self.pac_wheel_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        self.verticalLayout_2.addWidget(self.pac_wheel_label, QtCore.Qt.AlignHCenter)
+        # sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        # sizePolicy.setHorizontalStretch(0)
+        # sizePolicy.setVerticalStretch(0)
+        # sizePolicy.setHeightForWidth(self.pac_wheel_label.sizePolicy().hasHeightForWidth())
+        # self.pac_wheel_label.setSizePolicy(sizePolicy)
+        # font = QtGui.QFont()
+        # font.setPointSize(15)
+        # self.pac_wheel_label.setFont(font)
+        # self.pac_wheel_label.setObjectName(_fromUtf8("pac_wheel_label"))
+        # self.verticalLayout_2.addWidget(self.pac_wheel_label, QtCore.Qt.AlignLeft)
+        # self.pac_wheel_label.setStyleSheet(_fromUtf8("color: white"))
         self.pac_wheel = QtGui.QLabel(self.centralWidget)
-        self.pac_wheel.setText(_fromUtf8(""))
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/sw_512_128x128.png")))
-        self.pac_wheel.setObjectName(_fromUtf8("pac_wheel"))
-        self.pac_wheel.setAlignment(QtCore.Qt.AlignHCenter)
-        self.verticalLayout_2.addWidget(self.pac_wheel, QtCore.Qt.AlignHCenter)
-        self.verticalLayout.addLayout(self.verticalLayout_2)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setMargin(11)
-        self.horizontalLayout_2.setSpacing(6)
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.pacmod_label = QtGui.QLabel(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pacmod_label.sizePolicy().hasHeightForWidth())
-        self.pacmod_label.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(self.pac_wheel.sizePolicy().hasHeightForWidth())
+        self.pac_wheel.setSizePolicy(sizePolicy)
+        self.pac_wheel.setText(_fromUtf8(""))
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+        self.pac_wheel.setObjectName(_fromUtf8("pac_wheel"))
+        self.verticalLayout_2.addWidget(self.pac_wheel, QtCore.Qt.AlignLeft)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_2)
+        self.pacmod_label = QtGui.QLabel(self.centralWidget)
         font = QtGui.QFont()
-        font.setBold(True)
         font.setPointSize(15)
         self.pacmod_label.setFont(font)
+        self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green"))
         self.pacmod_label.setObjectName(_fromUtf8("pacmod_label"))
+        self.pacmod_label.setMaximumSize(QtCore.QSize(16777215, 50))
         self.pacmod_label.setFrameShape(QtGui.QFrame.StyledPanel)
-        #self.QFrame.setstylesheet() # maybe a work around for border radius
-        self.pacmod_label.setStyleSheet( _fromUtf8("background-color: rgb(136, 138, 133); color: white"))
-        self.pacmod_label.setAlignment(Qt.AlignVCenter)
         self.pacmod_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        self.horizontalLayout_2.addWidget(self.pacmod_label, QtCore.Qt.AlignHCenter)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        #sizePolicy.setHeightForWidth(self.pacmod_label.sizePolicy().hasHeightForWidth())
+        self.pac_wheel.setSizePolicy(sizePolicy)
+        self.horizontalLayout_2.addWidget(self.pacmod_label)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.verticalLayout_3 = QtGui.QVBoxLayout()
         self.verticalLayout_3.setMargin(11)
         self.verticalLayout_3.setSpacing(6)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
+        self.horizontalLayout_7 = QtGui.QHBoxLayout()
+        self.horizontalLayout_7.setMargin(11)
+        self.horizontalLayout_7.setSpacing(6)
+        self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
+        self.verticalLayout_3.addLayout(self.horizontalLayout_7)
         self.acceleration_label = QtGui.QLabel(self.centralWidget)
         font = QtGui.QFont()
-        font.setBold(True)
         font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
         self.acceleration_label.setFont(font)
         self.acceleration_label.setObjectName(_fromUtf8("acceleration_label"))
         self.acceleration_label.setStyleSheet(_fromUtf8("color: white"))
         self.acceleration_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addWidget(self.acceleration_label, QtCore.Qt.AlignHCenter)
         self.acceleration_bar = QtGui.QProgressBar(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.acceleration_bar.sizePolicy().hasHeightForWidth())
         self.acceleration_bar.setSizePolicy(sizePolicy)
         self.acceleration_bar.setProperty("value", 0)
-        self.acceleration_bar.setStyleSheet( _fromUtf8("color: white;"))
         self.acceleration_bar.setObjectName(_fromUtf8("acceleration_bar"))
         self.verticalLayout_3.addWidget(self.acceleration_bar)
         self.braking_label = QtGui.QLabel(self.centralWidget)
         font = QtGui.QFont()
-        font.setBold(True)
         font.setPointSize(15)
+        font.setBold(True)
+        font.setWeight(75)
         self.braking_label.setFont(font)
         self.braking_label.setObjectName(_fromUtf8("braking_label"))
         self.braking_label.setStyleSheet(_fromUtf8("color: white"))
@@ -145,7 +161,6 @@ class Ui_MainWindow(object):
         self.braking_bar.setSizePolicy(sizePolicy)
         self.braking_bar.setProperty("value", 0)
         self.braking_bar.setObjectName(_fromUtf8("braking_bar"))
-        self.braking_bar.setStyleSheet( _fromUtf8("color: white;"))
         self.verticalLayout_3.addWidget(self.braking_bar)
         self.verticalLayout.addLayout(self.verticalLayout_3)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -156,12 +171,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(spacerItem)
         self.as_logo = QtGui.QLabel(self.centralWidget)
         self.as_logo.setText(_fromUtf8(""))
-        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_dark_no_bg(80).png")))
-        self.as_logo.setObjectName(_fromUtf8("as_logo"))
+        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
         self.as_logo.setAlignment(QtCore.Qt.AlignRight)
-        self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
+        self.as_logo.setObjectName(_fromUtf8("as_logo"))
+        self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
         self.verticalLayout.addLayout(self.horizontalLayout)
         MainWindow.setCentralWidget(self.centralWidget)
+ 
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+
         self.statusBar = QtGui.QStatusBar(MainWindow)
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         MainWindow.setStatusBar(self.statusBar)
@@ -171,8 +192,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(_translate("MainWindow", "PACMod game control", None))
-        self.pac_wheel_label.setText(_translate("MainWindow", "PACMod Indicator", None))
-        self.pacmod_label.setText(_translate("MainWindow", "PACMod Status:", None))
+        #self.pac_wheel_label.setText(_translate("MainWindow", "PACMod Indicator", None))
+        self.pacmod_label.setText(_translate("MainWindow", "Ready", None))
         self.acceleration_label.setText(_translate("MainWindow", "Acceleration", None))
         self.braking_label.setText(_translate("MainWindow", "Braking", None))
 
@@ -208,8 +229,6 @@ class JoyGui(object):
             rospy.loginfo("NEW msg: Override = %s", msg.override_active)
             override = msg.override_active # Set message for proccessing
 
-
-
     def accel_Percent_CB(self, msg):
         """
         Retrieves throttle position as a float number signifying percent:
@@ -231,6 +250,13 @@ class JoyGui(object):
         if enable == True:
             veh_brake = int(msg.output * CONVERTER)
             #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake)) # Sends info to log
+
+    def steer_Converter_CB(self,msg):
+        global _steer_output
+
+        if enable == True:
+            _steer_output = msg.output
+            print (_steer_output * (180/3.14))
 
     # def overArray(self,msg):
     #     pass
@@ -259,6 +285,7 @@ class JoyGui(object):
         self.sysOverRideSub = rospy.Subscriber('/pacmod/parsed_tx/global_rpt',pacmod_msgs.msg.GlobalRpt,self.override_Check_CB, queue_size=100)
         self.throttleSub = rospy.Subscriber('/pacmod/parsed_tx/accel_rpt',pacmod_msgs.msg.SystemRptFloat,self.accel_Percent_CB,queue_size= 100)
         self.brakeSub = rospy.Subscriber('/pacmod/parsed_tx/brake_rpt',pacmod_msgs.msg.SystemRptFloat,self.brake_Percent_CB, queue_size= 100)
+        self.steerSub = rospy.Subscriber('/pacmod/parsed_tx/steer_rpt',pacmod_msgs.msg.SystemRptFloat,self.steer_Converter_CB, queue_size= 100)
         #self.allSysOver = rospy.Subscriber('/pacmod/as_tx/all_system_statuses',pacmod_msgs.msg.AllSystemStatuses, self.overArray, queue_size=100)
 
 class MyThread(QtCore.QThread):
@@ -359,13 +386,13 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         if data == True:
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(98, 177, 246); color: white"))
-            self.pacmod_label.setText("PACMod Status: Enabled")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel.png")))
+            self.pacmod_label.setText("Enabled")
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png")))
 
         elif data == False and (override == False):
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
-            self.pacmod_label.setText("PACMod Status: Ready")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel.png")))
+            self.pacmod_label.setText("Ready")
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
@@ -378,8 +405,8 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         """
 
         self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
-        self.pacmod_label.setText("PACMod Status: Over-Ride")
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel.png")))
+        self.pacmod_label.setText("Over-Ride")
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("../../../../pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
