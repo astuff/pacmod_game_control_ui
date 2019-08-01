@@ -8,9 +8,10 @@ import time
 
 try:
     #Qt lib
-    from PyQt4 import QtCore, QtGui
-    from PyQt4.QtCore import SIGNAL, SLOT, QObject, pyqtSignal
-    from PyQt4.QtGui import QLabel, QApplication
+    from PyQt5 import QtCore, QtGui, QtWidgets
+    from PyQt5.QtCore import  QObject, pyqtSignal #, SIGNAL, SLOT,
+    from PyQt5.QtWidgets import QLabel, QApplication
+    from PyQt5.QtGui import QFont 
 
     #ROS lib
     import rospy
@@ -45,40 +46,40 @@ except AttributeError:
     def _fromUtf8(s):
         return s
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QtWidgets.QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QtWidgets.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QtWidgets.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(454, 400)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        self.centralWidget = QtGui.QWidget(MainWindow)
+        self.centralWidget = QtWidgets.QWidget(MainWindow)
         self.centralWidget.setObjectName(_fromUtf8("centralWidget"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.centralWidget)
-        self.verticalLayout.setMargin(11)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.centralWidget)
+        self.verticalLayout.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout.setSpacing(6)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setMargin(11)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout()
-        self.verticalLayout_2.setMargin(11)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.pac_wheel_label = QtGui.QLabel(self.centralWidget)
-        self.pac_wheel = QtGui.QLabel(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
+        self.pac_wheel_label = QtWidgets.QLabel(self.centralWidget)
+        self.pac_wheel = QtWidgets.QLabel(self.centralWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.pac_wheel.sizePolicy().hasHeightForWidth())
@@ -88,44 +89,36 @@ class Ui_MainWindow(object):
         self.pac_wheel.setObjectName(_fromUtf8("pac_wheel"))
         self.verticalLayout_2.addWidget(self.pac_wheel, QtCore.Qt.AlignLeft)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
-        self.pacmod_label = QtGui.QLabel(self.centralWidget)
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        font.setBold(True)
-        font.setWeight(75)
-        self.pacmod_label.setFont(font)
+        self.pacmod_label = QtWidgets.QLabel(self.centralWidget)
+        self.pacmod_label.setFont(QtGui.QFont("Ubuntu", 15, QtGui.QFont.Bold))
         self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green"))
         self.pacmod_label.setObjectName(_fromUtf8("pacmod_label"))
         self.pacmod_label.setMaximumSize(QtCore.QSize(16777215, 50))
-        self.pacmod_label.setFrameShape(QtGui.QFrame.StyledPanel)
+        self.pacmod_label.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.pacmod_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         self.pac_wheel.setSizePolicy(sizePolicy)
         self.horizontalLayout_2.addWidget(self.pacmod_label)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
-        self.verticalLayout_3 = QtGui.QVBoxLayout()
-        self.verticalLayout_3.setMargin(11)
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setContentsMargins(11, 11, 11, 11)
         self.verticalLayout_3.setSpacing(6)
         self.verticalLayout_3.setObjectName(_fromUtf8("verticalLayout_3"))
-        self.horizontalLayout_7 = QtGui.QHBoxLayout()
-        self.horizontalLayout_7.setMargin(11)
+        self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_7.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout_7.setSpacing(6)
         self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
         self.verticalLayout_3.addLayout(self.horizontalLayout_7)
-        self.acceleration_label = QtGui.QLabel(self.centralWidget)
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        font.setBold(True)
-        font.setWeight(75)
-        self.acceleration_label.setFont(font)
+        self.acceleration_label = QtWidgets.QLabel(self.centralWidget)
+        self.acceleration_label.setFont(QtGui.QFont("Ubuntu", 15, QtGui.QFont.Bold))
         self.acceleration_label.setObjectName(_fromUtf8("acceleration_label"))
-        self.acceleration_label.setStyleSheet(_fromUtf8(" white;color: white"))
+        self.acceleration_label.setStyleSheet(_fromUtf8("color: white"))
         self.acceleration_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addWidget(self.acceleration_label, QtCore.Qt.AlignHCenter)
-        self.acceleration_bar = QtGui.QProgressBar(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.MinimumExpanding)
+        self.acceleration_bar = QtWidgets.QProgressBar(self.centralWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.acceleration_bar.sizePolicy().hasHeightForWidth())
@@ -134,18 +127,14 @@ class Ui_MainWindow(object):
         self.acceleration_bar.setObjectName(_fromUtf8("acceleration_bar"))
         self.acceleration_bar.setStyleSheet(_fromUtf8("color: white"))
         self.verticalLayout_3.addWidget(self.acceleration_bar)
-        self.braking_label = QtGui.QLabel(self.centralWidget)
-        font = QtGui.QFont()
-        font.setPointSize(15)
-        font.setBold(True)
-        font.setWeight(75)
-        self.braking_label.setFont(font)
+        self.braking_label = QtWidgets.QLabel(self.centralWidget)
+        self.braking_label.setFont(QtGui.QFont("Ubuntu", 15, QtGui.QFont.Bold))
         self.braking_label.setObjectName(_fromUtf8("braking_label"))
         self.braking_label.setStyleSheet(_fromUtf8("color: white"))
         self.braking_label.setAlignment(QtCore.Qt.AlignHCenter)
         self.verticalLayout_3.addWidget(self.braking_label, QtCore.Qt.AlignHCenter)
-        self.braking_bar = QtGui.QProgressBar(self.centralWidget)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.MinimumExpanding)
+        self.braking_bar = QtWidgets.QProgressBar(self.centralWidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.braking_bar.sizePolicy().hasHeightForWidth())
@@ -155,13 +144,13 @@ class Ui_MainWindow(object):
         self.braking_bar.setStyleSheet(_fromUtf8("color: white"))
         self.verticalLayout_3.addWidget(self.braking_bar)
         self.verticalLayout.addLayout(self.verticalLayout_3)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setMargin(11)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setContentsMargins(11, 11, 11, 11)
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
-        self.as_logo = QtGui.QLabel(self.centralWidget)
+        self.as_logo = QtWidgets.QLabel(self.centralWidget)
         self.as_logo.setText(_fromUtf8(""))
         self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
         self.as_logo.setAlignment(QtCore.Qt.AlignRight)
@@ -173,7 +162,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        self.statusBar = QtGui.QStatusBar(MainWindow)
+        self.statusBar = QtWidgets.QStatusBar(MainWindow)
         self.statusBar.setObjectName(_fromUtf8("statusBar"))
         MainWindow.setStatusBar(self.statusBar)
 
@@ -298,17 +287,18 @@ class MyThread(QtCore.QThread):
                     time.sleep(_PACMOD_RATE_IN_SEC)
 
                 elif (_override == True) and (_enable == True):
-                    print "Something went wrong..."
+                    rospy.loginfo("ROS MSG ERROR")
+                    break
 
 
-class MyApp(QtGui.QMainWindow, Ui_MainWindow):
+class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent = None):
 
         # Initialize subclasses
         QObject.__init__(self)
-        QtGui.QMainWindow.__init__(self)
-        Ui_MainWindow.__init__(self,QtGui.QMainWindow)
+        QtWidgets.QMainWindow.__init__(self)
+        Ui_MainWindow.__init__(self,QtWidgets.QMainWindow)
 
         #Initialize/show UI
         self.setupUi(self)
@@ -322,15 +312,13 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.Thread.accel_signal.connect(self.set_accel_bar)
         self.Thread.brake_signal.connect(self.set_brake_bar)
         self.Thread.start()
-
-        self.connect(self, SIGNAL('triggered()'), self.closeEvent)
+        
 
     #Signals and Slots here
     @QtCore.pyqtSlot()
     def closeEvent(self,event):
-        
         self.Thread.exit()
-        QtGui.QApplication.exit()
+        QtWidgets.QApplication.exit()
         
         self.destroy()
         
@@ -395,7 +383,7 @@ if __name__ == "__main__":
         rospy.logwarn("joy gui Error")
 
     #Init application window
-    app = QtGui.QApplication(sys.argv)
-    app.setStyle('cleanlooks')
+    app = QtWidgets.QApplication(sys.argv)
+    #app.setStyle('cleanlooks')
     window = MyApp()
     sys.exit(app.exec_())
