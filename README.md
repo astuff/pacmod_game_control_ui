@@ -22,3 +22,5 @@ is setup upon file generation and abstracts the absolute path with ../, but woul
 The second method:
 
 is making a resource folder with a xml file that identifies the relative path within the ros package directory and is still being researched for implementation in this applicaiton to make the pacmod_game_control_ui work across all platforms without having to set the absolute path for each image.
+
+Currently it is necessary to set the absolute path until a solution is produced.
