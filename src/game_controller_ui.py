@@ -9,9 +9,10 @@ import time
 try:
     #Qt lib
     from PyQt5 import QtCore, QtGui, QtWidgets
-    from PyQt5.QtCore import  QObject, pyqtSignal #, SIGNAL, SLOT,
-    from PyQt5.QtWidgets import QLabel, QApplication
+    from PyQt5.QtCore import  QObject, pyqtSignal
     from PyQt5.QtGui import QFont 
+    from PyQt5.QtWidgets import QLabel, QApplication, QAction
+    
 
     #ROS lib
     import rospy
@@ -20,26 +21,24 @@ try:
     from std_msgs.msg import Float64, Bool
 
 except ImportError():
-    rospy.loginfo("Module import error,/nDid you install dependencies per Github READ ME?")
+    rospy.loginfo("Module import error")
 
 #Node name
 _pyNode = "joy_gui"
 
-#Global constant
 _CONVERTER = 100
 _PACMOD_RATE = 30
 _PACMOD_RATE_IN_SEC = 0.33
 
-#Controls for ROS MSG'S
 _enable = False
 _override = False
 _veh_accel = 0.0
 _veh_brake = 0.0
 
-#Helper variables, Controls message frequency 
 _last_Enable = ''
 _last_Override = ''
 
+# Try block for multilingual support
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -85,7 +84,8 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.pac_wheel.sizePolicy().hasHeightForWidth())
         self.pac_wheel.setSizePolicy(sizePolicy)
         self.pac_wheel.setText(_fromUtf8(""))
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8(
+        "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.pac_wheel.setObjectName(_fromUtf8("pac_wheel"))
         self.verticalLayout_2.addWidget(self.pac_wheel, QtCore.Qt.AlignLeft)
         self.horizontalLayout_2.addLayout(self.verticalLayout_2)
@@ -152,7 +152,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addItem(spacerItem)
         self.as_logo = QtWidgets.QLabel(self.centralWidget)
         self.as_logo.setText(_fromUtf8(""))
-        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
+        self.as_logo.setPixmap(QtGui.QPixmap(_fromUtf8(
+        "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/as_no_bg(80).png")))
         self.as_logo.setAlignment(QtCore.Qt.AlignRight)
         self.as_logo.setObjectName(_fromUtf8("as_logo"))
         self.horizontalLayout.addWidget(self.as_logo, QtCore.Qt.AlignRight|QtCore.Qt.AlignVCenter)
@@ -189,7 +190,7 @@ class JoyGui(object):
         if msg.data != _last_Enable:
             _last_Enable = msg.data
             rospy.loginfo("NEW msg: PACMod Enabled = %s", msg.data)
-            _enable = msg.data # Set message for processing
+            _enable = msg.data # Set message for processing, if conditional is met
 
 
     def override_Check_CB(self,msg):
@@ -204,7 +205,7 @@ class JoyGui(object):
         if msg.override_active != _last_Override:
             _last_Override = msg.override_active
             rospy.loginfo("NEW msg: Override = %s", msg.override_active)
-            _override = msg.override_active # Set message for proccessing
+            _override = msg.override_active
 
     def accel_Percent_CB(self, msg):
         """
@@ -226,7 +227,7 @@ class JoyGui(object):
         
         if _enable == True:
             _veh_brake = int(msg.output * _CONVERTER)
-            #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake)) # Sends info to log
+            #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake))
 
     def subscribe(self):
 
@@ -251,7 +252,7 @@ class MyThread(QtCore.QThread):
     override_signal = pyqtSignal(bool, name = "set_override")
     timeout_signal = pyqtSignal(bool, name = "set_timeout")
 
-    # Only QObjects can emit singals
+    # Only QObjects can emit singals, and derives from QtCore
     def __init__(self):
         QtCore.QThread.__init__(self)
         QObject.__init__(self)
@@ -287,7 +288,7 @@ class MyThread(QtCore.QThread):
                     time.sleep(_PACMOD_RATE_IN_SEC)
 
                 elif (_override == True) and (_enable == True):
-                    rospy.loginfo("ROS MSG ERROR")
+                    rospy.loginfo("ROS MSG ERROR, over-ride and enabled cannot both be True")
                     break
 
 
@@ -296,7 +297,6 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, parent = None):
 
         # Initialize subclasses
-        QObject.__init__(self)
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self,QtWidgets.QMainWindow)
 
@@ -312,11 +312,16 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.Thread.accel_signal.connect(self.set_accel_bar)
         self.Thread.brake_signal.connect(self.set_brake_bar)
         self.Thread.start()
+
+        #QtAction, triggers closeEvent to shut down application
+        quit = QAction("Quit", self)
+        quit.triggered.connect(self.closeEvent)
         
 
     #Signals and Slots here
     @QtCore.pyqtSlot()
     def closeEvent(self,event):
+        #rospy.signal_shutdown("Window close event detected")
         self.Thread.exit()
         QtWidgets.QApplication.exit()
         
@@ -332,12 +337,14 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         if data == True:
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: rgb(98, 177, 246); color: white"))
             self.pacmod_label.setText("Enabled")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png")))
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8(
+            "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png")))
 
-        elif data == False and (_override == False):
+        elif (data == False) and (_override == False):
             self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
             self.pacmod_label.setText("Ready")
-            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+            self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8(
+            "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
@@ -350,7 +357,8 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.pacmod_label.setStyleSheet(_fromUtf8("background-color: green; color: white"))
         self.pacmod_label.setText("Over-Ride")
-        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8("/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
+        self.pac_wheel.setPixmap(QtGui.QPixmap(_fromUtf8(
+        "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png")))
         self.update()
 
 
@@ -376,6 +384,11 @@ if __name__ == "__main__":
     try:
         # init Qnode here 
         rospy.init_node(_pyNode)
+        # 
+        #anonymous= False, 
+        #log_level=rospy.INFO,
+        #disable_signals = False)
+
         joy_gui = JoyGui()
         joy_gui.subscribe()
 
