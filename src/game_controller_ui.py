@@ -21,8 +21,8 @@ try:
     from std_msgs.msg import Float64, Bool
 
     #Main window
-    from Ui_MainWindow import*
-    from MyThread import*
+    from mythread import *
+    from ui_mainwindow import *
 
 
 except ImportError():
@@ -201,8 +201,7 @@ if __name__ == "__main__":
     try:
         # init Qnode here 
         rospy.init_node(_pyNode)
-        # 
-        #anonymous= False, 
+        #,anonymous= False, 
         #log_level=rospy.INFO,
         #disable_signals = False)
 
