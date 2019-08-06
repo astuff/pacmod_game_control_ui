@@ -6,9 +6,6 @@ import sys
 
 #Qt lib
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import  QObject, pyqtSignal
-from PyQt5.QtGui import QFont 
-from PyQt5.QtWidgets import QLabel, QApplication, QAction
 
 # Try block for multilingual support
 try:

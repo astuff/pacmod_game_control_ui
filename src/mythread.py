@@ -7,7 +7,6 @@ import rospy
 from PyQt5 import QtCore
 from PyQt5.QtCore import  QObject, pyqtSignal, QThread
 from game_controller_ui import _override, _enable, _veh_accel, _veh_brake, _PACMOD_RATE_IN_SEC
-from ui_mainwindow import pyqtSignal, QObject
 
 class MyThread(QThread):
 
