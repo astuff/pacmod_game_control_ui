@@ -204,13 +204,13 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
             self.pacmod_label.setStyleSheet("background-color: rgb(98, 177, 246); color: white")
             self.pacmod_label.setText("Enabled")
             self.pac_wheel.setPixmap(QtGui.QPixmap(
-            "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png"))
+            "/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/autonomouswheel(80).png"))
 
         elif (data == False) and (_override == False):
             self.pacmod_label.setStyleSheet("background-color: green; color: white")
             self.pacmod_label.setText("Ready")
             self.pac_wheel.setPixmap(QtGui.QPixmap(
-            "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png"))
+            "/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png"))
         self.update()
 
     @QtCore.pyqtSlot(bool)
@@ -223,7 +223,7 @@ class MyApp(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pacmod_label.setStyleSheet("background-color: green; color: white")
         self.pacmod_label.setText("Over-Ride")
         self.pac_wheel.setPixmap(QtGui.QPixmap(
-        "/home/calib_fenoglio/pacmod_game_control_ui/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png"))
+        "/home/demo/standard_ws/src/pacmod_game_control_ui/autonomy_images/overridewheel(80).png"))
         self.update()
 
     @QtCore.pyqtSlot(int)
@@ -259,6 +259,6 @@ if __name__ == "__main__":
 
     #Init application window
     app = QtWidgets.QApplication(sys.argv)
-    #app.setStyle('cleanlooks')
+    app.setStyle('cleanlooks')
     window = MyApp()
     sys.exit(app.exec_())
