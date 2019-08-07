@@ -259,6 +259,6 @@ if __name__ == "__main__":
 
     #Init application window
     app = QtWidgets.QApplication(sys.argv)
-    #app.setStyle('cleanlooks')
+    app.setStyle('cleanlooks')
     window = MyApp()
     sys.exit(app.exec_())
