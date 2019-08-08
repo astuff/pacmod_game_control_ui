@@ -247,9 +247,7 @@ if __name__ == "__main__":
     try:
         # init Qnode here 
         rospy.init_node(_pyNode)
-        #,anonymous= False, 
-        #log_level=rospy.INFO,
-        #disable_signals = False)
+        #,anonymous= False, log_level=rospy.INFO) #,disable_signals = False) 
 
         joy_gui = JoyGui()
         joy_gui.subscribe()
@@ -259,6 +257,6 @@ if __name__ == "__main__":
 
     #Init application window
     app = QtWidgets.QApplication(sys.argv)
-    app.setStyle('cleanlooks')
+    #app.setStyle('cleanlooks')
     window = MyApp()
     sys.exit(app.exec_())
