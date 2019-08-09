@@ -8,26 +8,25 @@ import os
 #import sys
 import time
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import SIGNAL, SLOT
-from PyQt4.QtCore import QObject
-from PyQt4.QtCore import *
-from PyQt4.QtGui import QLabel
-from PyQt4.QtGui import QApplication
+try:
+    from PyQt4 import QtCore, QtGui
+    from PyQt4.QtCore import SIGNAL, SLOT, QObject, pyqtSignal, pyqtSlot
+    from PyQt4.QtGui import QLabel, QApplication
 
-import rospy
-from std_msgs.msg import String
-from std_msgs.msg import Float64
-from std_msgs.msg import Bool
-from pacmod_msgs.msg import *
+    import rospy
+    from std_msgs.msg import String
+    from std_msgs.msg import Bool
+    from pacmod_msgs.msg import *
+except ImportError():
+    rospy.loginfo("Module import error")
 
 #Node name
 pyNode = "joy_gui"
 
 #Global constant
-CONVERTER = 100
-PACMOD_RATE = 30
-PACMOD_RATE_IN_SEC = 0.33
+_CONVERTER = 100
+_PACMOD_RATE = 30
+_PACMOD_RATE_IN_SEC = 0.33
 
 # Controls for ROS MSG'S
 enable = False
@@ -77,17 +76,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setSpacing(6)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
         self.pac_wheel_label = QtGui.QLabel(self.centralWidget)
-        # sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
-        # sizePolicy.setHorizontalStretch(0)
-        # sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.pac_wheel_label.sizePolicy().hasHeightForWidth())
-        # self.pac_wheel_label.setSizePolicy(sizePolicy)
-        # font = QtGui.QFont()
-        # font.setPointSize(15)
-        # self.pac_wheel_label.setFont(font)
-        # self.pac_wheel_label.setObjectName(_fromUtf8("pac_wheel_label"))
-        # self.verticalLayout_2.addWidget(self.pac_wheel_label, QtCore.Qt.AlignLeft)
-        # self.pac_wheel_label.setStyleSheet(_fromUtf8("color: white"))
         self.pac_wheel = QtGui.QLabel(self.centralWidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -237,7 +225,7 @@ class JoyGui(object):
         global veh_accel
 
         if enable == True:
-            veh_accel = int(msg.output * CONVERTER)
+            veh_accel = int(msg.output * _CONVERTER)
             #rospy.loginfo(rospy.get_name() + " Acceleration output: %f", (veh_accel)) # Sends info to log
 
     def brake_Percent_CB(self,msg):
@@ -248,29 +236,8 @@ class JoyGui(object):
         global veh_brake
         
         if enable == True:
-            veh_brake = int(msg.output * CONVERTER)
+            veh_brake = int(msg.output * _CONVERTER )
             #rospy.loginfo(rospy.get_name() + " Braking output: %f", (veh_brake)) # Sends info to log
-
-    def steer_Converter_CB(self,msg):
-        global _steer_output
-
-        if enable == True:
-            _steer_output = msg.output
-            print (_steer_output * (180/3.14))
-
-    # def overArray(self,msg):
-    #     pass
-    #     # [1] = brake system on lexus and truck
-    #     # [3] = steering on truck
-    #     # [5] = steering on lexus
-
-    #     print "Now in over ride checker"
-
-    #     print "Brake = " + msg.overridden_status[1].value
-
-    #     print "Steer = " + msg.overridden_status[5].value
-
-    #     #print msg.overridden_status[5].value
 
     def subscribe(self):
 
@@ -278,15 +245,13 @@ class JoyGui(object):
         rospy.loginfo("Ready to publish... \n")
 
         # Set to match Pacmod rate
-        self.rate = rospy.Rate(PACMOD_RATE) # 30 HZ
+        self.rate = rospy.Rate(_PACMOD_RATE) # 30 HZ
 
         # #ROS Subscriber values 
         self.systemSub = rospy.Subscriber('/pacmod/as_tx/enabled',std_msgs.msg.Bool,self.enabled_Check_CB, queue_size= 100)
         self.sysOverRideSub = rospy.Subscriber('/pacmod/parsed_tx/global_rpt',pacmod_msgs.msg.GlobalRpt,self.override_Check_CB, queue_size=100)
         self.throttleSub = rospy.Subscriber('/pacmod/parsed_tx/accel_rpt',pacmod_msgs.msg.SystemRptFloat,self.accel_Percent_CB,queue_size= 100)
         self.brakeSub = rospy.Subscriber('/pacmod/parsed_tx/brake_rpt',pacmod_msgs.msg.SystemRptFloat,self.brake_Percent_CB, queue_size= 100)
-        self.steerSub = rospy.Subscriber('/pacmod/parsed_tx/steer_rpt',pacmod_msgs.msg.SystemRptFloat,self.steer_Converter_CB, queue_size= 100)
-        #self.allSysOver = rospy.Subscriber('/pacmod/as_tx/all_system_statuses',pacmod_msgs.msg.AllSystemStatuses, self.overArray, queue_size=100)
 
 class MyThread(QtCore.QThread):
 
@@ -312,31 +277,29 @@ class MyThread(QtCore.QThread):
                 while (enable == True) and (override == False):
 
                     self.enable_signal.emit(enable)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
 
                     self.accel_signal.emit(veh_accel)
-                    #time.sleep(PACMOD_RATE_IN_SEC)
 
                     self.brake_signal.emit(veh_brake)
-                    #time.sleep(PACMOD_RATE_IN_SEC)
 
                 if (enable == False) and (override == False):
                     self.enable_signal.emit(enable)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
                     self.accel_signal.emit(0)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
                     self.brake_signal.emit(0)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
 
     
                 elif (override == True) and (enable == False):
                     self.enable_signal.emit(enable)
                     self.override_signal.emit(override)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
                     self.accel_signal.emit(0)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
                     self.brake_signal.emit(0)
-                    time.sleep(PACMOD_RATE_IN_SEC)
+                    time.sleep(_PACMOD_RATE_IN_SEC)
 
                 elif (override == True) and (enable == True):
                     print "Something went wrong..."
@@ -354,7 +317,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
         #Initialize/show UI
         self.setupUi(self)
-        self.setStyleSheet("background-color: black");
+        self.setStyleSheet("background-color: black")
         self.show()
 
         # Init thread and connect signals to slots to do work
