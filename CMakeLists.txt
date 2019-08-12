@@ -13,10 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 roslint_python()
-
 catkin_python_setup()
-
-
 
 ###################################
 ## catkin specific configuration ##
