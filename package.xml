@@ -8,7 +8,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>pacmod_msgs</depend>
-  <depend>qt_gui_app</depend>
+  <depend>qt_build</depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
   <depend>std_msgs</depend>

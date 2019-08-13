@@ -5,7 +5,7 @@ project(pacmod_game_control_ui)
 find_package(catkin REQUIRED COMPONENTS
   
   roslint
-  qt_gui_app
+  qt_build
   roscpp
   rospy
   std_msgs
@@ -23,7 +23,7 @@ catkin_python_setup()
 ###################################
 catkin_package(
   LIBRARIES pacmod_game_control_ui
-  CATKIN_DEPENDS pacmod_msgs qt_gui_app roscpp rospy std_msgs
+  CATKIN_DEPENDS pacmod_msgs qt_build roscpp rospy std_msgs
 )
 
 ###########
