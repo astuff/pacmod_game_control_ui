@@ -1,26 +1,10 @@
 # pacmod_game_control_ui
 User interface for pacmod_game_control using PyQt4.
 
-To install on a platform the following dependencies need to be installed
-- pyqt4 
-- qtbuild
+NOTE! The current best branch for Ros Melodic running on Ubuntu 18.04 is melodic_2020
 
-This can be achieved with the following terminal commands 
+Ros Melodic does not support the qt-build dependency anymore and the  package.xml and CMakeList.txt have been updated to reflect that. The application is still dependent on Qt and all dependencies can be install with the following command ran in the pacmod_game_control_ui directory
 
-rosdep install --from-paths src --ignore-src --rosdistro=kinetic -y
 
-sudo apt-get install python-qt4
+rosdep install --from-paths src --ignore-src --rosdistro=melodic -y
 
-Currently the image files included in the package need to be set for each platform the application is installed on, but once set should not have to change.
-
-Qt has two methods to make image resources independent of full system path.
-
-The first method:
-
-is setup upon file generation and abstracts the absolute path with ../, but would not work for me in the LEXUS_RH_450H despite trying to manipulate the path with ../ and versus having to us the absolute path for example (/home/platform/ws/src/package/src/images/file.png)
-
-The second method:
-
-is making a resource folder with a xml file that identifies the relative path within the ros package directory and is still being researched for implementation in this applicaiton to make the pacmod_game_control_ui work across all platforms without having to set the absolute path for each image.
-
-Currently it is necessary to set the absolute path until a solution is produced.
