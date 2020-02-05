@@ -1,11 +1,9 @@
 # pacmod_game_control_ui
 User interface for pacmod_game_control using PyQt4.
 
-***************************AS OF Wednesday February 5th 2020***************************
+***************************As of Wednesday February 5th 2020***************************
 
-NOTE! The current best branch for Ros Melodic running on Ubuntu 18.04 is melodic_2020
-
-*************************************************************************************
+NOTE: The current best branch for Ros Melodic running on Ubuntu 18.04 is melodic_2020
 
 Current best branch will be merged into master in the near future.
 
