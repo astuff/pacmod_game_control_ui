@@ -1,0 +1,8 @@
+prefix=/home/devtop/pacmod_game_control_ui/devel/.private/pacmod_game_control_ui
+
+Name: pacmod_game_control_ui
+Description: Description of pacmod_game_control_ui
+Version: 1.0.0
+Cflags: 
+Libs: -L${prefix}/lib -lpacmod_game_control_ui
+Requires: pacmod_msgs roscpp rospy std_msgs

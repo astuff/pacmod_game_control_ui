@@ -1,0 +1,6 @@
+devel_space: /home/devtop/pacmod_game_control_ui/devel
+install: false
+install_space: /home/devtop/pacmod_game_control_ui/install
+profile: default
+source_space: /home/devtop/pacmod_game_control_ui/src
+workspace: /home/devtop/pacmod_game_control_ui

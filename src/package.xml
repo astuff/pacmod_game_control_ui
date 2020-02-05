@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pacmod_game_control_ui</name>
+  <version>1.0.0</version>
+  <description>The pacmod_game_control_ui package</description>
+  <maintainer email="cfenoglio@autonomoustuff.com">Calib Fenoglio</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>pacmod_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>roslint</depend>
+  <depend>qtbase5-dev</depend>
+  <depend>qtdeclarative5-dev</depend>
+  <depend>qtmultimedia5-dev</depend>
+  <depend>libqt5-svg-dev</depend>
+  <depend>libqt5multimedia5-plugins</depend>
+
+  <export>
+  </export>
+
+</package>

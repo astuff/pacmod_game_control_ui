@@ -1,0 +1,6 @@
+set(pacmod_game_control_ui_SETUP_PY_VERSION "1.0.0")
+set(pacmod_game_control_ui_SETUP_PY_SCRIPTS "")
+set(pacmod_game_control_ui_SETUP_PY_PACKAGES "pacmod_game_control_ui")
+set(pacmod_game_control_ui_SETUP_PY_PACKAGE_DIRS "src/pacmod_game_control_ui")
+set(pacmod_game_control_ui_SETUP_PY_MODULES "")
+set(pacmod_game_control_ui_SETUP_PY_MODULE_DIRS "")

@@ -1,0 +1,1 @@
+/home/devtop/pacmod_game_control_ui/devel/.private/pacmod_game_control_ui/lib/pkgconfig/pacmod_game_control_ui.pc
